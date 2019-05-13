@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      label {
+        font-weight: bold;
+      }
+    </style>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+    <script>
+      function processForm() {
+        var form = document.getElementById('status');
+        google.script.run
+          .withSuccessHandler(closeWindow)
+          .runBulkCheckin(form);
+      }
+      
+      function closeWindow() {
+        google.script.host.close();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Bulk Checkin Assets</h1>
+    <p>Select a status.</p>
+    <form id="status">
+      <table width="100%">
+        <fieldset>
+          <p>
+             <label>Select Status</label>
+             <select id = "myList" name="status_name">
+               <option value = "Storage">Storage</option>
+               <option value = "Lab">Lab</option>
+               <option value = "Departmental">Departmental</option>
+               <option value = "Recycle">Recycle</option>
+             </select>
+          </p>
+       </fieldset>
+        <tr>
+          <td><label>Location:</label></td><td><input type="text" name="location" size="40" value="" /></td>
+        </tr>
+        <tr>
+          <td><label>Selected Device Tags:</label></td><td><input type="text" name="tags" size="40" disabled=true style="color: grey;" value="<?= tags ?>" /></td>
+        </tr>
+      </table>
+      <input type="button" id="confirm" value="Confirm" onclick="processForm()" /> <input type="button" id="cancel" value="Cancel" onclick="google.script.host.close()" />
+      <p id="result"></p>
+    </form>
+  </body>
+</html>
+
