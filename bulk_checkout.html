@@ -23,7 +23,7 @@
   </head>
   <body>
     <h1>Bulk Checkout Assets</h1>
-    <p>Select a status and enter a location.</p>
+    <p>Select a status and enter a location or username.</p>
     <form id="status">
       <table width="100%">
          <fieldset>
@@ -41,11 +41,15 @@
           <td><label>Location:</label></td><td><input type="text" name="location" size="40" value="" /></td>
         </tr>
         <tr>
+          <td><label>Username:</label></td><td><input type="text" name="username" size="40" value="" /></td>
+        </tr>
+        <tr>
           <td><label>Selected Device Tags:</label></td><td><input type="text" name="tags" size="40" disabled=true style="color: grey;" value="<?= tags ?>" /></td>
         </tr>
       </table>
       <input type="button" id="confirm" value="Confirm" onclick="processForm()" /> <input type="button" id="cancel" value="Cancel" onclick="google.script.host.close()" />
       <p id="result"></p>
+      <p>Window should close upon completion. Check Errors tab for assets that could not be checked out.</p>
     </form>
   </body>
 </html>

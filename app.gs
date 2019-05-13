@@ -26,17 +26,34 @@ function runBulkCheckin(form){
 function runBulkCheckout(form){
   var status_name = form.status_name
   var status = getStatusIDByName(status_name)
-  var location = form.location
-  var location = getLocationIDByName(location)
+  if (form.location){
+    var location = form.location
+    var location = getLocationIDByName(location)
+  }
+  if (form.username) {
+    var username = form.username
+    var user = getUserIDByUsername(username)
+  }
+  
   var ss = SpreadsheetApp.getActive();
   var sh = ss.getActiveSheet();
   var range = ss.getActiveRange()
   var tags = range.getValues()
-  for (var i=0; i<tags.length; i++){
-    var tag = tags[i]
-    var id = getAssetIDByTag(tag)
-    updateAssetStatus(id,status)
-    checkOutAsset(id,location)
+  if (location){
+    for (var i=0; i<tags.length; i++){
+      var tag = tags[i]
+      var id = getAssetIDByTag(tag)
+      updateAssetStatus(id,status)
+      checkOutAsset(id,location)
+    }
+  }
+  if (user){
+    for (var i=0; i<tags.length; i++){
+      var tag = tags[i]
+      var id = getAssetIDByTag(tag)
+      updateAssetStatus(id,status)
+      checkOutAsset(id,null,user)
+    }
   }
 }
 

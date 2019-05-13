@@ -49,8 +49,14 @@ function updateAssetStatus(id, status){
   return response;
 }
 
-
+function testCheckInAsset(){
+  checkInAsset("72","1863")
+}
 function checkInAsset(id,location){
+  //clear any outstanding errors
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
+      sheet.clear()
+      
   var data = {}
   if ( location ){
         data["location_id"]=location
@@ -66,19 +72,36 @@ function checkInAsset(id,location){
     "headers" : headers,
     "payload": JSON.stringify(data)
   };
+   try {
    var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  }
+  catch(e){
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
+    sheet.appendRow(["ERROR: Could not check in.",e])
+    return
+  }
   
   return response;
 }
 
 function testCheckOutAsset(){
-  checkOutAsset("8311","1805")
+  checkOutAsset("72",null)
 }
-function checkOutAsset(id,location){
+function checkOutAsset(id,location,user){
+  //clear any outstanding errors
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
+      sheet.clear()
+      
   var data = {}
-  data["assigned_location"]=location
-  data["checkout_to_type"]="location"
-  
+  if (location) {
+    data["assigned_location"]=location
+    data["checkout_to_type"]="location"
+  }
+  if (user) {
+    data["assigned_user"]=user
+    data["checkout_to_type"]="user"
+  }
+      
   var url = serverURL + 'api/v1/hardware/' + id + '/checkout'
   var headers = {
     "Authorization" : "Bearer " + apiKey
@@ -88,9 +111,16 @@ function checkOutAsset(id,location){
     "method" : "POST",
     "contentType" : "application/json",
     "headers" : headers,
-    "payload" : JSON.stringify(data)
+    "payload" : JSON.stringify(data),
   };
+  try {
    var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  }
+  catch(e){
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
+    sheet.appendRow(["ERROR: Could not check out.",e])
+    return
+  }
   if ( response.messages == "That asset is not available for checkout!" ){
     checkInAsset(id)
     var response = JSON.parse(UrlFetchApp.fetch(url, options));
@@ -122,7 +152,7 @@ function getStatusIDByName(name){
 }
 
 function testGetLocationIDByName(){
-  var id = getLocationIDByName("Test Location")
+  var id = getLocationIDByName("CC 325")
   //Logger.log(id)
 }
 function getLocationIDByName(name){
@@ -136,7 +166,14 @@ function getLocationIDByName(name){
     "contentType" : "application/json",
     "headers" : headers,
   };
+    try {
    var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  }
+  catch(e){
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
+    sheet.appendRow(["LOCATION ERROR: ",e])
+    return
+  }
    var rows = response.rows
   for (var i=0; i<response.total; i++){
     var row = rows[i]
@@ -147,3 +184,27 @@ function getLocationIDByName(name){
   }
   return response;
 }
+
+function getUserIDByUsername(username){
+  var url = serverURL + 'api/v1/users?search=' + username
+  var headers = {
+    "Authorization" : "Bearer " + apiKey
+  };
+  
+  var options = {
+    "method" : "GET",
+    "contentType" : "application/json",
+    "headers" : headers,
+  };
+   var response = JSON.parse(UrlFetchApp.fetch(url, options));
+   var rows = response.rows
+  for (var i=0; i<response.total; i++){
+    var row = rows[i]
+    if ( row.username == username ){
+      var user = row.id
+      return user
+    }
+  }
+  return response;
+}
+ 
