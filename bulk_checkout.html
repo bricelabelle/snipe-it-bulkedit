@@ -38,7 +38,16 @@
           </p>
        </fieldset>
         <tr>
-          <td><label>Location:</label></td><td><input type="text" name="location" size="40" value="" /></td>
+          <td><label>Location:</label></td>
+          <td>
+            <input type="text" list="locations" name="location" placeholder="Start typing a location" value="" />
+            <datalist id="locations">
+            <? var options = getLocations()
+        for (var i = 0; i < options.length; i++) { ?>
+          <option value=<?= options[i] ?>></option>
+       <? } ?>
+            </datalist>
+          </td>
         </tr>
         <tr>
           <td><label>Username:</label></td><td><input type="text" name="username" size="40" value="" /></td>
@@ -53,3 +62,4 @@
     </form>
   </body>
 </html>
+

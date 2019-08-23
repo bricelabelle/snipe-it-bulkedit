@@ -207,4 +207,45 @@ function getUserIDByUsername(username){
   }
   return response;
 }
+
+
+function syncLocations(){
+  var locations = []
+  var url = serverURL + 'api/v1/locations'
+  var headers = {
+    "Authorization" : "Bearer " + apiKey
+  };
+  
+  var options = {
+    "method" : "GET",
+    "contentType" : "application/json",
+    "headers" : headers,
+  };
+  
+  //run once to get the total to use for the limit
+  var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  var limit = response.total
+  
+  //run again with the limit so Google actually returns all the results.
+  var url = serverURL + 'api/v1/locations?limit=' + limit
+  var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  var rows = response.rows
+  
+  for (var i=0; i<response.total; i++){
+    var row = rows[i]
+    locations.push(row.name)
+  }
+  
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Locations")
+  var range = ss.getRange(1,1)
+      range.setValue(JSON.stringify(locations))
+  return locations
+}
+
+function getLocations(){
+ var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Locations")
+ var locations = JSON.parse(ss.getRange(1,1).getValues()[0])
+ Logger.log(locations)
+ return locations
+}
  
