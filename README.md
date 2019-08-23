@@ -8,7 +8,8 @@ Google Script files to use Google Sheets as a bulk checkout/checkin/edit tool fo
 5. Enter your Snipe-it server URL and API key on the Setup.gs script.
 6. Save, then close and reopen your sheet. You should now see a "Run Command" option in the menu bar.
 7. Create a tab in your sheet called "Errors". Any assets that cannot be checked in or out for some reason will show up there each time you run the command.
-8. Go back to your main tab and scan or enter asset tags in any single column. I use the Barcode to PC app. https://barcodetopc.com/
-9. Highlight the tags you just entered and then choose an option from the Run Command menu.
+8. Create another tab in your sheet called "Locations" (You can hide this tab after you create it if you want).
+9. Go back to your main tab and scan or enter asset tags in any single column. I use the Barcode to PC app. https://barcodetopc.com/
+10. Highlight the tags you just entered and then choose an option from the Run Command menu.
 
 NOTE: You may need to first run one of the test functions manually (in the script editor) so Google will have you authorize the script's permissions.
