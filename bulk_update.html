@@ -6,6 +6,22 @@
       label {
         font-weight: bold;
       }
+      #confirm {
+        background: MediumSeaGreen;
+        margin-right: 40px;
+      }
+      
+      #cancel {
+        background: FireBrick;
+      }
+      
+      #confirm,
+      #cancel {
+        color: white;
+        border: 1px solid black;
+        font-size: 12px;
+        border-radius: 5px;
+      }
     </style>
     <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
     <script>
@@ -34,6 +50,7 @@
                <option value = "Lab">Lab</option>
                <option value = "Departmental">Departmental</option>
                <option value = "Recycle">Recycle</option>
+               <option value = "Donated">Donated</option>
              </select>
           </p>
        </fieldset>
@@ -41,8 +58,11 @@
           <td><label>Selected Device Tags:</label></td><td><input type="text" name="tags" size="40" disabled=true style="color: grey;" value="<?= tags ?>" /></td>
         </tr>
       </table>
-      <input type="button" id="confirm" value="Confirm" onclick="processForm()" /> <input type="button" id="cancel" value="Cancel" onclick="google.script.host.close()" />
+      <div align="Center">
+        <input type="button" id="confirm" value="Confirm" onclick="processForm()" /> <input type="button" id="cancel" value="Cancel" onclick="google.script.host.close()" />
+      </div>
       <p id="result"></p>
     </form>
   </body>
 </html>
+
