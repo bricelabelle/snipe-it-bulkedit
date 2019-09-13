@@ -1,5 +1,5 @@
 //Takes a tag number and returns the snipe id for the asset.
-//(The id is what's used to make changes to an asset)
+//The id is what's used to make changes to an asset.
 function getAssetIDByTag(tag) {
   
   var url = serverURL + 'api/v1/hardware?search=' + tag;
@@ -248,4 +248,3 @@ function getLocations(){
  Logger.log(locations)
  return locations
 }
- 
