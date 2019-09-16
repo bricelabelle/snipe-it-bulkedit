@@ -237,6 +237,13 @@ function syncLocations(){
   }
   
   var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Locations")
+  //create the sheet if it doesn't exist
+  if ( ! ss ){
+   var newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet()
+   newSheet.setName("Locations")
+   var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Locations")
+   ss.hideSheet()
+  }
   var range = ss.getRange(1,1)
       range.setValue(JSON.stringify(locations))
   return locations
