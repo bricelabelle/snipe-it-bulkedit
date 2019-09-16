@@ -76,12 +76,8 @@ function checkInAsset(id,location){
    var response = JSON.parse(UrlFetchApp.fetch(url, options));
   }
   catch(e){
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
-    sheet.appendRow(["ERROR: Could not check in.",e])
-    return
+    return "Error"
   }
-  
-  return response;
 }
 
 function testCheckOutAsset(){
@@ -117,15 +113,12 @@ function checkOutAsset(id,location,user){
    var response = JSON.parse(UrlFetchApp.fetch(url, options));
   }
   catch(e){
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Errors")
-    sheet.appendRow(["ERROR: Could not check out.",e])
-    return
+    return "Error"
   }
   if ( response.messages == "That asset is not available for checkout!" ){
     checkInAsset(id)
     var response = JSON.parse(UrlFetchApp.fetch(url, options));
   }
-  return response;
 }
 
 function getStatusIDByName(name){

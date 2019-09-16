@@ -15,9 +15,13 @@ function runBulkCheckin(form){
   var tags = range.getValues()
   for (var i=0; i<tags.length; i++){
     var tag = tags[i]
-    Logger.log(tag)
     var id = getAssetIDByTag(tag)
-    checkInAsset(id,location)
+    var checkin = checkInAsset(id,location)
+    if (checkin == "Error"){
+       var message = "Could not check in " + tag + ". Try a manual check-in in Snipe."
+       reportErrors(message);
+       return
+    }
     updateAssetStatus(id,status)
   }
 }
@@ -44,7 +48,12 @@ function runBulkCheckout(form){
       var tag = tags[i]
       var id = getAssetIDByTag(tag)
       updateAssetStatus(id,status)
-      checkOutAsset(id,location)
+      var checkout = checkOutAsset(id,location)
+      if (checkout == "Error"){
+        var message = "Could not check out " + tag + ". Try a manual check-out in Snipe."
+        reportErrors(message);
+        return
+      }
     }
   }
   if (user){
@@ -52,7 +61,12 @@ function runBulkCheckout(form){
       var tag = tags[i]
       var id = getAssetIDByTag(tag)
       updateAssetStatus(id,status)
-      checkOutAsset(id,null,user)
+      var checkout = checkOutAsset(id,null,user)
+      if (checkout == "Error"){
+       var message = "Could not check out " + tag + ". Try a manual check-out in Snipe."
+       reportErrors(message);
+       return
+      } 
     }
   }
 }
@@ -98,4 +112,14 @@ function bulkCheckout(){
 
 function bulkUpdateStatus(){
   bulkChanges('bulk_update.html')
+}
+
+function reportErrors(message){
+    var template = HtmlService.createTemplateFromFile('errors.html');
+        template.message = message
+    var html = template.evaluate()
+        .setWidth(500)
+        .setHeight(400)
+        .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+        SpreadsheetApp.getUi().showModalDialog(html, ' ');
 }
