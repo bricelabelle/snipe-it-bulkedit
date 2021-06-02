@@ -46,11 +46,10 @@
           <p>
              <label>Select Status</label>
              <select id = "myList" name="status_name">
-               <option value = "Storage">Storage</option>
-               <option value = "Lab">Lab</option>
-               <option value = "Departmental">Departmental</option>
-               <option value = "Recycle">Recycle</option>
-               <option value = "Donated">Donated</option>
+               <? var options = getStatusLabels()
+               for (var i = 0; i < options.length; i++) { ?>
+                 <option value=<?= options[i] ?>><?= options[i] ?></option>
+               <? } ?>
              </select>
           </p>
        </fieldset>
@@ -65,4 +64,3 @@
     </form>
   </body>
 </html>
-

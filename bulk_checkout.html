@@ -22,7 +22,6 @@
         font-size: 12px;
         border-radius: 5px;
       }
-      
     </style>
     <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
     <script>
@@ -47,10 +46,10 @@
           <p>
              <label>Select Status</label>
              <select id = "myList" name="status_name">
-               <option value = "Storage">Storage</option>
-               <option value = "Lab">Lab</option>
-               <option value = "Departmental">Departmental</option>
-               <option value = "Recycle">Recycle</option>
+               <? var options = getStatusLabels()
+               for (var i = 0; i < options.length; i++) { ?>
+                 <option value=<?= options[i] ?>><?= options[i] ?></option>
+               <? } ?>
              </select>
           </p>
        </fieldset>
@@ -67,7 +66,17 @@
           </td>
         </tr>
         <tr>
-          <td><label>Username:</label></td><td><input type="text" name="username" size="40" value="" /></td>
+          <td><label>Username:</label></td>
+          <td>
+            <!-- <input type="text" name="username" size="40" value="" /> -->
+            <input type="text" list="usernames" name="username" placeholder="Start typing a username" value="" />
+            <datalist id="usernames">
+            <? var options = getUsers()
+        for (var i = 0; i < options.length; i++) { ?>
+          <option value=<?= options[i] ?>></option>
+       <? } ?>
+            </datalist>
+            </td>
         </tr>
         <tr>
           <td><label>Selected Device Tags:</label></td><td><input type="text" name="tags" size="40" disabled=true style="color: grey;" value="<?= tags ?>" /></td>
@@ -81,4 +90,3 @@
     </form>
   </body>
 </html>
-

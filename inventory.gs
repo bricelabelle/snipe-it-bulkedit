@@ -248,3 +248,97 @@ function getLocations(){
  Logger.log(locations)
  return locations
 }
+
+function syncStatusLabels(){
+  var statuslabels = []
+  var url = serverURL + 'api/v1/statuslabels'
+  var headers = {
+    "Authorization" : "Bearer " + apiKey
+  };
+  
+  var options = {
+    "method" : "GET",
+    "contentType" : "application/json",
+    "headers" : headers,
+  };
+  
+  //run once to get the total to use for the limit
+  var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  var limit = response.total
+  
+  //run again with the limit so Google actually returns all the results.
+  var url = serverURL + 'api/v1/statuslabels?limit=' + limit
+  var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  var rows = response.rows
+  
+  for (var i=0; i<response.total; i++){
+    var row = rows[i]
+    statuslabels.push(row.name)
+  }
+  
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Status Labels")
+  //create the sheet if it doesn't exist
+  if ( ! ss ){
+   var newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet()
+   newSheet.setName("Status Labels")
+   var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Status Labels")
+   ss.hideSheet()
+  }
+  var range = ss.getRange(1,1)
+      range.setValue(JSON.stringify(statuslabels))
+  return statuslabels
+}
+
+function getStatusLabels(){
+ var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Status Labels")
+ var statuslabels = JSON.parse(ss.getRange(1,1).getValues()[0])
+ Logger.log(statuslabels)
+ return statuslabels
+}
+
+function syncUsers(){
+  var users = []
+  var url = serverURL + 'api/v1/users'
+  var headers = {
+    "Authorization" : "Bearer " + apiKey
+  };
+  
+  var options = {
+    "method" : "GET",
+    "contentType" : "application/json",
+    "headers" : headers,
+  };
+  
+  //run once to get the total to use for the limit
+  var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  var limit = response.total
+  
+  //run again with the limit so Google actually returns all the results.
+  var url = serverURL + 'api/v1/users?limit=' + limit
+  var response = JSON.parse(UrlFetchApp.fetch(url, options));
+  var rows = response.rows
+  
+  for (var i=0; i<response.total; i++){
+    var row = rows[i]
+    users.push(row.username)
+  }
+  
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Users")
+  //create the sheet if it doesn't exist
+  if ( ! ss ){
+   var newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet()
+   newSheet.setName("Users")
+   var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Users")
+   ss.hideSheet()
+  }
+  var range = ss.getRange(1,1)
+      range.setValue(JSON.stringify(users))
+  return users
+}
+
+function getUsers(){
+ var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Users")
+ var users = JSON.parse(ss.getRange(1,1).getValues()[0])
+ Logger.log(users)
+ return users
+}
