@@ -4,6 +4,8 @@ apiKey = 'yourapikey';
 function onOpen(e) {
   createCommandsMenu();
   syncLocations();
+  syncStatusLabels();
+  syncUsers();
 }
 
 function createCommandsMenu() {
@@ -13,5 +15,6 @@ function createCommandsMenu() {
       .addItem('Bulk Checkout', 'bulkCheckout')
       .addItem('Bulk Update Status', 'bulkUpdateStatus')
       .addItem('Sync Snipe Locations','syncLocations')
+      .addItem('Sync Snipe Status Labels','syncStatusLabels')
       .addToUi();
 }
