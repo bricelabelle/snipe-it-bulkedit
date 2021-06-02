@@ -16,5 +16,6 @@ function createCommandsMenu() {
       .addItem('Bulk Update Status', 'bulkUpdateStatus')
       .addItem('Sync Snipe Locations','syncLocations')
       .addItem('Sync Snipe Status Labels','syncStatusLabels')
+      .addItem('Sync Snipe Users','syncUsers')
       .addToUi();
 }
